@@ -1,0 +1,5 @@
+
+POST http://localhost:8080/api/holiday/dump
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!

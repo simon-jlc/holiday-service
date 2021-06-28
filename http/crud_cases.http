@@ -1,0 +1,38 @@
+GET http://localhost:8080/api/holiday?email=c.ehtridge@aol.us
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+### a DEVELOPER employee add a day off for someone
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2020-06-22"
+}
+
+### Modify a day off to another one for employee
+PUT http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "previous_day_off": "2020-06-02",
+  "new_day_off": "2021-06-08"
+}
+
+### Remove day off for employee
+DELETE http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2020-06-01"
+}
+

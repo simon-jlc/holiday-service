@@ -1,0 +1,93 @@
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2021-01-04"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2021-01-05"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2021-01-06"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "w.runninggoat@aol.us",
+  "day_off": "2021-01-06"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "w.runninggoat@aol.us",
+  "day_off": "2021-01-07"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "w.runninggoat@aol.us",
+  "day_off": "2021-01-08"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "w.runninggoat@aol.us",
+  "day_off": "2021-01-11"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "w.runninggoat@aol.us",
+  "day_off": "2021-01-12"
+}

@@ -1,0 +1,72 @@
+# Book all available days off for 2020 (5 days off available)
+# Then the 26th days off should be refused because a negative balance is not allowed
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2020-06-01"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2020-06-02"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2020-06-03"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2020-06-04"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2020-06-05"
+}
+
+###
+
+POST http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
+
+{
+  "employee_email": "c.ehtridge@aol.us",
+  "day_off": "2020-06-06"
+}
