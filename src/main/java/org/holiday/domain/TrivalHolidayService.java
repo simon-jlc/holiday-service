@@ -53,7 +53,7 @@ public class TrivalHolidayService {
     @Transactional
     public List<EmployeeDayOffDto> findDayOfByCriteria(@NotNull final HolidaySearchCriteriaVM searchCriteria) {
         return em.createQuery(""
-                + "SELECT e FROM Employee "
+                + "SELECT e FROM Employee e"
                 + "    LEFT JOIN FETCH e.daysOff "
                 + "WHERE e.email IN (:emails)", Employee.class)
                 .setParameter("emails", searchCriteria.getEmail())
