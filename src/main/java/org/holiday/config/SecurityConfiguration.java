@@ -27,21 +27,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        var usersByUsernameQuery = ""
+                + "SELECT e.email as username, e.password, 'true' as enabled "
+                + "FROM th_employee e "
+                + "WHERE e.email = ?";
+
+        var authoritiesByUsernameQuery = ""
+                + "SELECT e.email as username, a.name as role "
+                + "FROM th_employee e "
+                + "    INNER JOIN th_employee_authority ea ON e.id = ea.employee_id "
+                + "    INNER JOIN th_authority a ON ea.authority_name = a.name "
+                + "WHERE e.email = ?";
+
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .usersByUsernameQuery("""
-                            SELECT e.email as username, e.password, 'true' as enabled
-                            FROM th_employee e
-                            WHERE e.email = ?
-                        """)
-                .authoritiesByUsernameQuery("""
-                            SELECT e.email as username, a.name as role
-                            FROM th_employee e
-                                INNER JOIN th_employee_authority ea ON e.id = ea.employee_id
-                                INNER JOIN th_authority a ON ea.authority_name = a.name
-                            WHERE e.email = ?
-                        """);
-
+                .usersByUsernameQuery(usersByUsernameQuery)
+                .authoritiesByUsernameQuery(authoritiesByUsernameQuery);
     }
 
     // FIXME SR: bien verifier le csrf

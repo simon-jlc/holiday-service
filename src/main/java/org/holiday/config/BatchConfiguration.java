@@ -1,16 +1,14 @@
 package org.holiday.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.holiday.batch.DynamicFilenameDefiner;
 import org.holiday.batch.EmployeeDayOffRecord;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.core.listener.StepListenerSupport;
-import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -29,7 +27,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -109,7 +106,7 @@ public class BatchConfiguration {
         lineAggregator.setDelimiter(DELIMITER_CHAR);
         lineAggregator.setFieldExtractor(fieldExtractor);
 
-        var outputFilePath = "/Users/simon/Documents/temp/" + outputFilename;
+        var outputFilePath = outputDir + outputFilename;
         return new FlatFileItemWriterBuilder<EmployeeDayOffRecord>()
                 .name("employeesDaysOffFileWriter")
                 .resource(new FileSystemResource(outputFilePath))
@@ -119,25 +116,14 @@ public class BatchConfiguration {
     }
 
     private String sql() {
-        return """
-                select
-                       e.id,
-                       e.email,
-                       e.first_name,
-                       e.last_name,
-                       d.day_off,
-                       dpy.year,
-                       dpy.days_off_count as available_per_year,
-                       count(d.day_off) OVER (PARTITION BY e.id, dpy.year) as days_off_taken,
-                       b.balance
-                from th_employee e
-                    left join th_employee_dayoff ed on ed.employee_id = e.id
-                    left join th_day_off d on d.id = ed.dayoff_id
-                    left join th_emp_day_off_balance b on e.id = b.employee_id
-                    left join th_day_off_per_year dpy on dpy.year = b.year
-                where b.year = cast ( to_char(d.day_off, 'YYYY') as int8)
-                order by e.id, d.day_off
-                """;
+        return "select e.id, e.email, e.first_name, e.last_name, d.day_off, dpy.year, dpy.days_off_count as available_per_year, count(d.day_off) OVER (PARTITION BY e.id, dpy.year) as days_off_taken, b.balance " +
+                "from th_employee e " +
+                "    left join th_employee_dayoff ed on ed.employee_id = e.id " +
+                "    left join th_day_off d on d.id = ed.dayoff_id " +
+                "    left join th_emp_day_off_balance b on e.id = b.employee_id " +
+                "     left join th_day_off_per_year dpy on dpy.year = b.year " +
+                "where b.year = cast ( to_char(d.day_off, 'YYYY') as int8)" +
+                "order by e.id, d.day_off";
     }
 
     private RowMapper<EmployeeDayOffRecord> mapToRecord() {

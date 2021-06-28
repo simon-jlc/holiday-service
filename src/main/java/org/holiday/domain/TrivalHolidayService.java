@@ -1,7 +1,6 @@
 package org.holiday.domain;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
 import org.holiday.api.vm.HolidaySearchCriteriaVM;
 import org.holiday.exception.DayOffPerYearNotInitializedException;
 import org.holiday.exception.EmployeeNotFoundException;
@@ -18,8 +17,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkState;
 
 @Slf4j
 @Service
@@ -49,16 +46,16 @@ public class TrivalHolidayService {
      * In case of search criteria are empty, then a global search is made.
      * <p>
      * <p>
+     *
      * @param searchCriteria
      * @return
      */
     @Transactional
     public List<EmployeeDayOffDto> findDayOfByCriteria(@NotNull final HolidaySearchCriteriaVM searchCriteria) {
-        return em.createQuery("""
-                select e from Employee e
-                    left join fetch e.daysOff
-                    where e.email in (:emails)
-                """, Employee.class)
+        return em.createQuery(""
+                + "SELECT e FROM Employee "
+                + "    LEFT JOIN FETCH e.daysOff "
+                + "WHERE e.email IN (:emails)", Employee.class)
                 .setParameter("emails", searchCriteria.getEmail())
                 .getResultStream()
                 .map(this::toDto).collect(Collectors.toList());
@@ -66,6 +63,7 @@ public class TrivalHolidayService {
 
     /**
      * Add a day off to an employee via its email.
+     *
      * @param employeeEmail
      * @param dayOff
      */
@@ -99,8 +97,9 @@ public class TrivalHolidayService {
 
     /**
      * Replace an employee day off by another one via employee's email.
-     *
+     * <p>
      * FIXME : peut être amelioré
+     *
      * @param employeeEmail
      * @param prevDayOff
      * @param newDayOff
@@ -113,6 +112,7 @@ public class TrivalHolidayService {
 
     /**
      * Remove a day off to an employee via its email.
+     *
      * @param employeeEmail
      * @param dayOff
      */

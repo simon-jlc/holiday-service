@@ -9,24 +9,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Map;
+
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
-
-    /**
-     * use some JDK16 feature :)
-     */
-    record Message(String message) {
-    }
 
     @ExceptionHandler(DayOffPerYearNotInitializedException.class)
     public ResponseEntity<?> handleException(DayOffPerYearNotInitializedException exception, WebRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new Message(exception.getMessage()));
+                .body(Map.of("message", exception.getMessage()));
     }
 
     @ExceptionHandler(NoDayOffAvailableException.class)
     public ResponseEntity<?> handleException(NoDayOffAvailableException exception, WebRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new Message(exception.getMessage()));
+                .body(Map.of("message", exception.getMessage()));
     }
 }
