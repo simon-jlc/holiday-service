@@ -34,6 +34,10 @@ When service starts, it initializes an employee model, with two default employee
 | Claretta Ethridge     | c.ehtridge@aol.us    | HelloWorld! | DEVELOPER  |
 | Winifred Running Goat | w.runninggoat@aol.us | HelloWorld! | CONSULTANT |
 
+4/ Use secured REST API
+Some API basic usage example are available in `./http` dir. 
+Those files can be launch via Intellij IDEA, otherwise you can use your favourite HTTP client ;)
+
 ### Entity model
 ![Entity model](doc/model.png)
 
