@@ -35,7 +35,7 @@ When service starts, it initializes an employee model, with two default employee
 | Winifred Running Goat | w.runninggoat@aol.us | HelloWorld! | CONSULTANT |
 
 ### Entity model
-[Entity model](docs/model.png)
+![Entity model](doc/model.png)
 
 
 ### TODO
