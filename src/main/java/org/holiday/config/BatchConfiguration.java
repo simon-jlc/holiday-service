@@ -121,7 +121,7 @@ public class BatchConfiguration {
                 "    left join th_employee_dayoff ed on ed.employee_id = e.id " +
                 "    left join th_day_off d on d.id = ed.dayoff_id " +
                 "    left join th_emp_day_off_balance b on e.id = b.employee_id " +
-                "     left join th_day_off_per_year dpy on dpy.year = b.year " +
+                "    left join th_day_off_per_year dpy on dpy.year = b.year " +
                 "where b.year = cast ( to_char(d.day_off, 'YYYY') as int8)" +
                 "order by e.id, d.day_off";
     }

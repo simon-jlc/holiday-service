@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 
 @Slf4j
 @Service
-@Profile("!test")
+@Profile("!withLargeDataset")
 public class DatabaseInitializer {
 
     @Autowired
