@@ -22,7 +22,6 @@ public class EmployeeDayOffBalance {
     @OneToOne
     private Employee employee;
 
-    // FIXME SR: l'unicité se fait sur Employee / year
     @Min(value = 1900)
     @Max(value = 2099)
     @Column(nullable = false)

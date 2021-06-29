@@ -27,6 +27,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -56,7 +57,8 @@ public class BatchConfiguration {
     ) {
         return jobs.get("employees_day_off")
                 .incrementer(new RunIdIncrementer())
-                .start(employeeDaysOffStep)
+                .flow(employeeDaysOffStep)
+                .end()
                 .build();
     }
 
@@ -71,7 +73,6 @@ public class BatchConfiguration {
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
-                .allowStartIfComplete(true)
                 .listener(new DynamicFilenameDefiner())
                 .build();
     }
@@ -106,7 +107,7 @@ public class BatchConfiguration {
         lineAggregator.setDelimiter(DELIMITER_CHAR);
         lineAggregator.setFieldExtractor(fieldExtractor);
 
-        var outputFilePath = outputDir + outputFilename;
+        var outputFilePath = Paths.get(outputDir, outputFilename);
         return new FlatFileItemWriterBuilder<EmployeeDayOffRecord>()
                 .name("employeesDaysOffFileWriter")
                 .resource(new FileSystemResource(outputFilePath))
