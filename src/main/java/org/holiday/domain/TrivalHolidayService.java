@@ -98,7 +98,6 @@ public class TrivalHolidayService {
     /**
      * Replace an employee day off by another one via employee's email.
      * <p>
-     * FIXME : peut être amelioré
      *
      * @param employeeEmail
      * @param prevDayOff

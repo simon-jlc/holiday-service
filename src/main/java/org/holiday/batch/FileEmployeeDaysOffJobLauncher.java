@@ -24,7 +24,6 @@ public class FileEmployeeDaysOffJobLauncher {
     private JobLauncher jobLauncher;
 
     public void start() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
-        // FIXME : Gerer l'execution async
         jobLauncher.run(fileEmployeeDaysOffJob, new JobParametersBuilder()
                 .addDate("startDate", new Date())
                 .toJobParameters());

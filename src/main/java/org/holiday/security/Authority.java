@@ -22,6 +22,12 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class Authority {
 
+    /**
+     * Defines authorities constants
+     */
+    public static String DEVELOPER = "DEVELOPER";
+    public static String CONSULTANT = "CONSULTANT";
+
     @NotNull
     @Size(max = 50)
     @Id

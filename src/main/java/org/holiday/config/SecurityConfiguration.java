@@ -1,5 +1,6 @@
 package org.holiday.config;
 
+import org.holiday.security.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
+
+import static org.holiday.security.Authority.DEVELOPER;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -41,11 +44,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder())
                 .usersByUsernameQuery(usersByUsernameQuery)
                 .authoritiesByUsernameQuery(authoritiesByUsernameQuery);
     }
 
-    // FIXME SR: bien verifier le csrf
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         // @formatter:off

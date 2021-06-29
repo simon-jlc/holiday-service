@@ -27,6 +27,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -56,7 +57,8 @@ public class BatchConfiguration {
     ) {
         return jobs.get("employees_day_off")
                 .incrementer(new RunIdIncrementer())
-                .start(employeeDaysOffStep)
+                .flow(employeeDaysOffStep)
+                .end()
                 .build();
     }
 
@@ -71,7 +73,6 @@ public class BatchConfiguration {
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
-                .allowStartIfComplete(true)
                 .listener(new DynamicFilenameDefiner())
                 .build();
     }
@@ -106,7 +107,7 @@ public class BatchConfiguration {
         lineAggregator.setDelimiter(DELIMITER_CHAR);
         lineAggregator.setFieldExtractor(fieldExtractor);
 
-        var outputFilePath = outputDir + outputFilename;
+        var outputFilePath = Paths.get(outputDir, outputFilename);
         return new FlatFileItemWriterBuilder<EmployeeDayOffRecord>()
                 .name("employeesDaysOffFileWriter")
                 .resource(new FileSystemResource(outputFilePath))
@@ -121,7 +122,7 @@ public class BatchConfiguration {
                 "    left join th_employee_dayoff ed on ed.employee_id = e.id " +
                 "    left join th_day_off d on d.id = ed.dayoff_id " +
                 "    left join th_emp_day_off_balance b on e.id = b.employee_id " +
-                "     left join th_day_off_per_year dpy on dpy.year = b.year " +
+                "    left join th_day_off_per_year dpy on dpy.year = b.year " +
                 "where b.year = cast ( to_char(d.day_off, 'YYYY') as int8)" +
                 "order by e.id, d.day_off";
     }

@@ -18,9 +18,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.holiday.security.Authority.*;
+
 @Slf4j
 @Service
-@Profile("!test")
 public class DatabaseInitializer {
 
     @Autowired
@@ -57,9 +58,9 @@ public class DatabaseInitializer {
 
         // initialize security roles
         var developer = new Authority();
-        developer.setName("DEVELOPER");
+        developer.setName(DEVELOPER);
         var consultant = new Authority();
-        consultant.setName("CONSULTANT");
+        consultant.setName(CONSULTANT);
         authorityRepository.saveAll(Lists.newArrayList(developer, consultant));
 
         // initialized two employees
