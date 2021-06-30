@@ -5,6 +5,7 @@ import org.holiday.domain.DayOff;
 import org.holiday.domain.Employee;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -36,6 +37,7 @@ class EmployeeRepositoryTest extends TrivalHolidayApplicationTests {
     }
 
     @Test
+    @Transactional
     public void should_save_employee_days_off() {
         var dayOff = new DayOff();
         dayOff.setDayOff(LocalDate.parse("2021-06-21"));

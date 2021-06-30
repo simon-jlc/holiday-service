@@ -22,6 +22,7 @@ import static org.holiday.security.Authority.*;
 
 @Slf4j
 @Service
+@Profile("!test")
 public class DatabaseInitializer {
 
     @Autowired

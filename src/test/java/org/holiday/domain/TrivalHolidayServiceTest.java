@@ -4,17 +4,15 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.holiday.TrivalHolidayApplicationTests;
 import org.holiday.api.vm.HolidaySearchCriteriaVM;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
 class TrivalHolidayServiceTest extends TrivalHolidayApplicationTests {
 
@@ -35,6 +33,13 @@ class TrivalHolidayServiceTest extends TrivalHolidayApplicationTests {
 
         employeeRepository.findByEmail("w.runninggoat@aol.us")
                 .orElseGet(() -> employeeRepository.save(anotherNewEmployee()));
+    }
+
+    @AfterAll
+    void cleanUp() {
+        dayOffRepo.deleteAllInBatch();
+        empDayOffBalanceRepository.deleteAllInBatch();
+        employeeRepository.deleteAllInBatch();
     }
 
     @Test
@@ -68,25 +73,22 @@ class TrivalHolidayServiceTest extends TrivalHolidayApplicationTests {
     @Order(3)
     void should_find_by_employee() {
         // prepare
-        var _2021 = 2021;
         sut.addDayOff(clarettaEthridgeEmail, LocalDate.parse("2020-12-31"));
         sut.addDayOff(clarettaEthridgeEmail, LocalDate.parse("2021-06-01"));
         sut.addDayOff(clarettaEthridgeEmail, LocalDate.parse("2021-06-02"));
 
         sut.addDayOff(winifredRunningGoatEmail, LocalDate.parse("2019-12-31"));
         sut.addDayOff(winifredRunningGoatEmail, LocalDate.parse("2020-06-22"));
+
+        // when filter on one employee
         var emails = Sets.newHashSet(clarettaEthridgeEmail);
-        var searchCriteria = HolidaySearchCriteriaVM.builder()
-                .email(emails)
-                .year(_2021).build();
+        var searchCriteria = HolidaySearchCriteriaVM.builder().email(emails).build();
+        assertThat(sut.findDayOfByCriteria(searchCriteria)).hasSize(1);
 
-        // when
-        var foundEmployeesWithDaysOff = sut.findDayOfByCriteria(searchCriteria);
 
-        // then
-        assertThat(foundEmployeesWithDaysOff).hasSize(1);
-        var foundEmployee = Iterables.getFirst(foundEmployeesWithDaysOff, null);
-        assertThat(foundEmployee.getEmail()).isEqualTo(clarettaEthridgeEmail);
-        assertThat(foundEmployee.getDaysOff()).hasSize(2);
+        // when filter on both employees
+        emails = Sets.newHashSet(clarettaEthridgeEmail, winifredRunningGoatEmail);
+        searchCriteria = HolidaySearchCriteriaVM.builder().email(emails).build();
+        assertThat(sut.findDayOfByCriteria(searchCriteria)).hasSize(2);
     }
 }
