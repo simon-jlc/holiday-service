@@ -85,8 +85,7 @@ public class BatchConfiguration {
                 .sql(sql())
                 .rowMapper(mapToRecord())
                 .queryTimeout((int) TimeUnit.MINUTES.toMillis(1))
-                .maxItemCount(10_000)
-                .maxRows(10)
+                .maxRows(10_000)
                 .build();
     }
 
