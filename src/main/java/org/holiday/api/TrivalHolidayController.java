@@ -42,7 +42,7 @@ public class TrivalHolidayController {
         return ResponseEntity.ok(new HolidaySuccessVM(message));
     }
 
-    @PutMapping(path = "{id}")
+    @PutMapping
     public ResponseEntity<?> replaceDayOff(@Valid @RequestBody ReplaceHolidayVM replaceHolidayVM) {
         holidayService.replaceDayOffBy(
                 replaceHolidayVM.getEmployeeEmail(),

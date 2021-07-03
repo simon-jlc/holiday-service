@@ -28,8 +28,8 @@ public class LargeDatasetInitializer extends AbstractDatasetInitializer {
 
         // data set
         var employeePwd = passwordEncoder.encode("HelloWorld!");
-        var firstNameSet = Set.of("Claretta", "Winifred", "Carl", "Joe", "Lou", "Tahiti", "Bart", "Kent", "Julius", "Maude");
-        var lastNameSet = Set.of("Ethridge", "Running Goat", "Simpson", "Taupeman", "Smithers", "Quimby", "Carlson", "Bob", "Mel");
+        var firstNameSet = Set.of("Lisa", "Maggie", "Carl", "Joe", "Lou", "Tahiti", "Bart", "Kent", "Julius", "Maude");
+        var lastNameSet = Set.of("Bouvier", "Gumble", "Simpson", "Taupeman", "Smithers", "Quimby", "Carlson", "Bob", "Mel");
 
         // bulk save all employees
         var employees = bulkCreate(employeePwd, developer, firstNameSet, lastNameSet);

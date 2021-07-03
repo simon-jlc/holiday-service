@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -44,8 +45,34 @@ class EmployeeRepositoryTest extends TrivalHolidayApplicationTests {
         dayOffRepo.save(dayOff);
 
         var employee = newEmployee();
+        employeeRepository.save(employee);
+
         employee.addDayOff(dayOff);
         employeeRepository.save(employee);
+
+        var persistedEmployee = employeeRepository.findByEmail(employee.getEmail()).orElseThrow();
+        assertThat(persistedEmployee.getDaysOff()).hasSize(1);
+    }
+
+    @Test
+    @Transactional
+    public void should_remove_employee_days_off() {
+        var date = LocalDate.parse("2021-06-21");
+        var dayOff = new DayOff();
+        dayOff.setDayOff(date);
+        dayOffRepo.save(dayOff);
+        var employee = newEmployee();
+        employeeRepository.save(employee);
+        employee.addDayOff(dayOff);
+        employeeRepository.save(employee);
+
+        assertThat(employee.removeDayOff(dayOff)).isTrue();
+
+        var persistedEmployee = employeeRepository.findByEmail(employee.getEmail()).orElseThrow();
+        assertThat(persistedEmployee.getDaysOff()).hasSize(0);
+
+        var byDayOff = dayOffRepo.findByDayOff(date).orElseThrow();
+        assertThat(byDayOff.getEmployees()).isEmpty();
     }
 
     @Test

@@ -4,9 +4,11 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import org.holiday.TrivalHolidayApplicationTests;
 import org.holiday.api.vm.HolidaySearchCriteriaVM;
+import org.holiday.domain.TrivalHolidayService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -59,6 +61,7 @@ class TrivalHolidayServiceTest extends TrivalHolidayApplicationTests {
 
     @Test
     @Order(2)
+    @Transactional
     void should_remove_a_day_off_to_employee() {
         sut.addDayOff(clarettaEthridgeEmail, LocalDate.parse("2021-06-22"));
         var clarettaEthridge = employeeRepository.findByEmail("c.ehtridge@aol.us").orElseThrow();

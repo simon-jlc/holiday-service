@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.PositiveOrZero;
@@ -39,6 +38,7 @@ public class HolidaySearchCriteriaVM {
 
     /**
      * A noop search criteria uses for a global search
+     *
      * @return
      */
     public static HolidaySearchCriteriaVM defaultSearch() {

@@ -1,7 +1,7 @@
-GET http://localhost:8080/api/holiday?email=c.ehtridge@aol.us
+GET http://localhost:8080/api/holiday?email=w.runninggoat@aol.us
 Accept: application/json
 Content-Type: application/json
-Authorization: Basic c.ehtridge@aol.us HelloWorld!
+Authorization: Basic w.runninggoat@aol.us HelloWorld!
 
 ### a DEVELOPER employee add a day off for someone
 POST http://localhost:8080/api/holiday
@@ -18,6 +18,7 @@ Authorization: Basic c.ehtridge@aol.us HelloWorld!
 PUT http://localhost:8080/api/holiday
 Accept: application/json
 Content-Type: application/json
+Authorization: Basic c.ehtridge@aol.us HelloWorld!
 
 {
   "employee_email": "c.ehtridge@aol.us",

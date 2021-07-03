@@ -13,7 +13,7 @@ public class RestConfiguration {
 
     /**
      * An <code>ObjectMapper</code> to handle snake case JSON property to camelCase Java class attribute
-     *
+     * <p>
      * WRITE_DATES_AS_TIMESTAMPS: set to false to avoid serialization of {@link java.time.LocalDate} as array
      *
      * @return

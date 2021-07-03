@@ -1,7 +1,6 @@
 package org.holiday.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.holiday.domain.Employee;
 import org.holiday.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

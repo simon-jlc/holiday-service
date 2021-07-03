@@ -2,11 +2,7 @@ package org.holiday;
 
 import org.holiday.domain.DayOffPerYear;
 import org.holiday.domain.Employee;
-import org.holiday.domain.TrivalHolidayService;
-import org.holiday.repository.DayOffPerYearRepository;
-import org.holiday.repository.DayOffRepository;
-import org.holiday.repository.EmployeeDayOffBalanceRepository;
-import org.holiday.repository.EmployeeRepository;
+import org.holiday.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;

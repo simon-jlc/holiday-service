@@ -1,6 +1,5 @@
 package org.holiday.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Value;
 
 import java.time.LocalDate;

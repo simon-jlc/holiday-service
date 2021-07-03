@@ -26,8 +26,8 @@ public class SmallDatasetInitializer extends AbstractDatasetInitializer {
 
         // data set
         var employeePwd = passwordEncoder.encode("HelloWorld!");
-        var firstNameSet = Set.of("Claretta", "Winifred");
-        var lastNameSet = Set.of("Ethridge", "Running Goat");
+        var firstNameSet = Set.of("Lisa", "Maggie");
+        var lastNameSet = Set.of("Bouvier", "Gumble");
 
         // bulk save all employees
         var employees = bulkCreate(employeePwd, developer, firstNameSet, lastNameSet);

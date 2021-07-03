@@ -1,7 +1,6 @@
 package org.holiday.domain;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.holiday.exception.NoDayOffAvailableException;
 
 import javax.persistence.*;

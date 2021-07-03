@@ -1,5 +1,6 @@
 package org.holiday.config.boostrap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.holiday.domain.DayOffPerYear;
 import org.holiday.domain.Employee;
 import org.holiday.domain.TrivalHolidayService;
@@ -18,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Slf4j
 public abstract class AbstractDatasetInitializer {
 
     @Autowired
@@ -35,9 +37,13 @@ public abstract class AbstractDatasetInitializer {
     @Autowired
     protected TrivalHolidayService holidayService;
 
+    @Autowired
+    private EmployeeModelInitializer employeeModelInitializer;
+
     public void initialize() {
         initializeCalendarInfos();
         initializeSecurityAuthorities();
+        employeeModelInitializer.initialize();
     }
 
     /**
@@ -84,7 +90,13 @@ public abstract class AbstractDatasetInitializer {
                     long endDay = LocalDate.of(year, Month.DECEMBER, 31).toEpochDay();
                     long dayInRange = ThreadLocalRandom.current().nextLong(startDay, endDay);
                     var dayOffDate = LocalDate.ofEpochDay(dayInRange);
-                    holidayService.addDayOff(employee.getEmail(), dayOffDate);
+                    try {
+                        holidayService.addDayOff(employee.getEmail(), dayOffDate);
+                    } catch (Exception exception) {
+                        // randomize day off creation, can create duplicate...
+                        // here we don't really matter
+                        log.error("Unable to add day off ({}) to {}. Exception: {}", dayOffDate, employee.getEmail(), exception.getMessage());
+                    }
                 }
             });
         }
@@ -93,7 +105,7 @@ public abstract class AbstractDatasetInitializer {
 
     /**
      * initialize all calendars with 25 days off by default per year
-     *  > 5 days off on 2020 to make some tests
+     * > 5 days off on 2020 to make some tests
      */
     private void initializeCalendarInfos() {
 
@@ -112,8 +124,8 @@ public abstract class AbstractDatasetInitializer {
 
     private void initializeSecurityAuthorities() {
         var roles = List.of("DEVELOPER", "CONSULTANT").stream()
-            .map(this::createAuthority)
-            .collect(Collectors.toList());
+                .map(this::createAuthority)
+                .collect(Collectors.toList());
 
         authorityRepository.saveAll(roles);
     }

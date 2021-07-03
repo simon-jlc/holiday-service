@@ -1,6 +1,5 @@
 package org.holiday.config;
 
-import org.holiday.security.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -53,14 +52,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         // @formatter:off
         http
-            .csrf().disable()
-            .authorizeRequests()
+                .csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/api/health").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/holiday").hasAuthority("DEVELOPER")
-                .antMatchers(HttpMethod.PUT, "/api/holiday").hasAuthority("DEVELOPER")
-                .antMatchers(HttpMethod.DELETE, "/api/holiday").hasAuthority("DEVELOPER")
+                .antMatchers(HttpMethod.POST, "/api/holiday").hasAuthority(DEVELOPER)
+                .antMatchers(HttpMethod.PUT, "/api/holiday").hasAuthority(DEVELOPER)
+                .antMatchers(HttpMethod.DELETE, "/api/holiday").hasAuthority(DEVELOPER)
                 .anyRequest().authenticated()
-            .and()
+                .and()
                 .httpBasic()
         ;
         // @formatter:on

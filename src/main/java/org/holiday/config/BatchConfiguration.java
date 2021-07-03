@@ -39,7 +39,7 @@ public class BatchConfiguration {
      */
     private static final String DELIMITER_CHAR = ",";
 
-    @Value("${org.holiday.employees_day_off.output.dir}")
+    @Value("${org.holiday.employees_day_off.output.dir:#{systemProperties['java.io.tmpdir']}}")
     private String outputDir;
 
     @Autowired
