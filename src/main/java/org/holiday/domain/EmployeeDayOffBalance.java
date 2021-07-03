@@ -28,14 +28,19 @@ public class EmployeeDayOffBalance {
 
     private Integer balance;
 
-    public void decrementBalance() {
+    public Integer decrementBalance() {
         if (hasReachedLimit()) {
             throw new NoDayOffAvailableException(employee.getEmail(), year);
         }
-        balance--;
+        return --balance;
     }
 
-    public boolean hasReachedLimit() {
+    public Integer incrementBalance() {
+        checkNotNull(balance);
+        return ++balance;
+    }
+
+    private boolean hasReachedLimit() {
         checkNotNull(balance);
         return balance == 0;
     }

@@ -1,4 +1,4 @@
-GET http://localhost:8080/api/holiday?email=w.runninggoat@aol.us
+GET http://localhost:8080/api/holiday?email=c.ehtridge@aol.us
 Accept: application/json
 Content-Type: application/json
 Authorization: Basic w.runninggoat@aol.us HelloWorld!
@@ -22,8 +22,8 @@ Authorization: Basic c.ehtridge@aol.us HelloWorld!
 
 {
   "employee_email": "c.ehtridge@aol.us",
-  "previous_day_off": "2020-06-02",
-  "new_day_off": "2021-06-08"
+  "previous_day_off": "2020-06-22",
+  "new_day_off": "2020-06-21"
 }
 
 ### Remove day off for employee
@@ -34,6 +34,6 @@ Authorization: Basic c.ehtridge@aol.us HelloWorld!
 
 {
   "employee_email": "c.ehtridge@aol.us",
-  "day_off": "2020-06-01"
+  "day_off": "2020-06-21"
 }
 

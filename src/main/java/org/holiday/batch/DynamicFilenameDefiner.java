@@ -15,10 +15,11 @@ public class DynamicFilenameDefiner implements StepExecutionListener {
         var startTime = stepExecution.getStartTime();
         var jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
         var jobInstanceId = stepExecution.getJobExecution().getJobInstance().getInstanceId();
+
         var dateFormat = new SimpleDateFormat("yyyy-MM-dd_HHmmssSSS");
         var outputFilename = jobName + "_" + jobInstanceId + "_" + dateFormat.format(startTime) + ".csv";
         stepExecution.getExecutionContext().put("output.file.name", outputFilename);
-        log.info("----> Define filename {}", outputFilename);
+        log.info("Job step < {}:{} > add dynamic property ['output.file.name'] : {}", jobName, stepExecution.getStepName(), outputFilename);
     }
 
     @Override

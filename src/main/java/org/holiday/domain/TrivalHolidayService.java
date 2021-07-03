@@ -81,18 +81,18 @@ public class TrivalHolidayService {
 
         // a same day of added several time still works
         if (!employee.addDayOff(persistDayOff)) {
-            log.info("{} day of was already taken by {}", dayOff, employee);
+            log.info("{} day off was already taken by {}", dayOff, employee);
             return;
         }
 
         // finally decrement balance with an "upsert" like
         var employeeBalanceOfYearAsked = empDayOffBalanceRepository.findByEmployeeAndYear(employee, yearAsked)
                 .orElseGet(() -> createBalance(employee, yearAsked, dayOffPerYearAsked.getDaysOffCount()));
-        employeeBalanceOfYearAsked.decrementBalance();
-        log.info("{} day of added for {}", dayOff, employee);
+        var newBalance = employeeBalanceOfYearAsked.decrementBalance();
+        log.info("{} day off added {}. New balance is: {}", dayOff, employee, newBalance);
 
         empDayOffBalanceRepository.save(employeeBalanceOfYearAsked);
-        empRepository.saveAndFlush(employee);
+        empRepository.save(employee);
     }
 
     /**
@@ -122,10 +122,17 @@ public class TrivalHolidayService {
         var dayOffRemove = dayOffRepository.findByDayOff(dayOff).orElseThrow(IllegalStateException::new);
 
         if (!employee.removeDayOff(dayOffRemove)) {
-            log.info("{} day of was already removed by {}", dayOff, employee);
+            log.info("{} day off was already removed by {}", dayOff, employee);
             return;
         }
 
+        var yearAsked = dayOffRemove.getDayOff().getYear();
+        // finally decrement balance with an "upsert" like
+        var employeeBalanceOfYearAsked = empDayOffBalanceRepository.findByEmployeeAndYear(employee, yearAsked).orElseThrow();
+        var newBalance = employeeBalanceOfYearAsked.incrementBalance();
+        log.info("{} day off removed {}. New balance is: {}", dayOff, employee, newBalance);
+
+        empDayOffBalanceRepository.save(employeeBalanceOfYearAsked);
         empRepository.save(employee);
     }
 

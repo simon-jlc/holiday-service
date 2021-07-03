@@ -22,7 +22,7 @@ import java.util.Set;
 @Entity
 @Table(name = "th_employee")
 @Data
-@ToString(exclude = { "daysOff", "authorities" })
+@ToString(exclude = { "password", "firstName", "lastName", "daysOff", "authorities" })
 public class Employee {
 
     @Id
