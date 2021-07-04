@@ -3,7 +3,6 @@ package org.holiday.domain;
 import lombok.Value;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Value
 public class EmployeeDayOffDto {
@@ -11,5 +10,5 @@ public class EmployeeDayOffDto {
     private String email;
     private String firstName;
     private String lastName;
-    private List<LocalDate> daysOff;
+    private LocalDate dayOff;
 }

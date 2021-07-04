@@ -1,4 +1,17 @@
-GET http://localhost:8080/api/holiday?email=c.ehtridge@aol.us
+### GET all holiday of all employees (without limit)
+GET http://localhost:8080/api/holiday
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic w.runninggoat@aol.us HelloWorld!
+
+### GET holiday filtering on emails
+GET http://localhost:8080/api/holiday?email=m.bouvier@aol.us&email=l.bouvier@aol.us
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic w.runninggoat@aol.us HelloWorld!
+
+### GET holiday filtering on email and year
+GET http://localhost:8080/api/holiday?email=m.bouvier@aol.us&year=2019
 Accept: application/json
 Content-Type: application/json
 Authorization: Basic w.runninggoat@aol.us HelloWorld!
@@ -34,6 +47,6 @@ Authorization: Basic c.ehtridge@aol.us HelloWorld!
 
 {
   "employee_email": "c.ehtridge@aol.us",
-  "day_off": "2020-06-21"
+  "day_off": "2020-06-01"
 }
 

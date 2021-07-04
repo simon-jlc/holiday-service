@@ -1,6 +1,8 @@
 package org.holiday.domain;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.holiday.api.vm.HolidaySearchCriteriaVM;
 import org.holiday.exception.DayOffPerYearNotInitializedException;
 import org.holiday.exception.EmployeeNotFoundException;
@@ -11,10 +13,15 @@ import org.holiday.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,24 +48,47 @@ public class TrivalHolidayService {
      * A search day off service to find all employee's days off by criteria.
      * It can filter on:
      * - employee's email array
-     * - TODO for a specific year
+     * - specified year days off filter
+     * - from, to if needed
      * <p>
      * In case of search criteria are empty, then a global search is made.
      * <p>
      * <p>
      *
-     * @param searchCriteria
+     * @param search
      * @return
      */
-    @Transactional
-    public List<EmployeeDayOffDto> findDayOfByCriteria(@NotNull final HolidaySearchCriteriaVM searchCriteria) {
-        return em.createQuery(""
-                + "SELECT e FROM Employee e"
-                + "    LEFT JOIN FETCH e.daysOff "
-                + "WHERE e.email IN (:emails)", Employee.class)
-                .setParameter("emails", searchCriteria.getEmail())
-                .getResultStream()
-                .map(this::toDto).collect(Collectors.toList());
+    public List<EmployeeDayOffDto> findDayOfByCriteria(@NotNull final HolidaySearchCriteriaVM search) {
+        // get all stuff to create a dynamic Criteria query using JPA API
+        Session session = em.unwrap(Session.class);
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<EmployeeDayOffDto> criteria = cb.createQuery(EmployeeDayOffDto.class);
+        Root<Employee> employee = criteria.from(Employee.class);
+        Join<Employee, DayOff> joinDaysOff = employee.join("daysOff");
+
+        // get all paths
+        Path<Long> idPath = employee.get("id");
+        Path<String> emailPath = employee.get("email");
+        Path<String> firstNamePath = employee.get("firstName");
+        Path<String> lastNamePath = employee.get("lastName");
+        Path<LocalDate> dayOffPath = joinDaysOff.get("dayOff");
+
+        // build SQL predicates based on search
+        List<Predicate> predicates = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(search.getEmail())) {
+            predicates.add(employee.get("email").in(search.getEmail()));
+        }
+        if (null != search.getYear()) {
+            predicates.add(cb.between(dayOffPath, search.fromDate(), search.toDate()));
+        }
+
+        // everything is ready, run the query and use DTO as projection
+        return em.createQuery(
+                criteria
+                    .select( cb.construct( EmployeeDayOffDto.class, idPath, emailPath, firstNamePath, lastNamePath, dayOffPath ) )
+                    .where( cb.and(predicates.toArray(Predicate[]::new)))
+                    .orderBy( cb.asc(lastNamePath), cb.asc(firstNamePath), cb.asc(dayOffPath) )
+        ).getResultList();
     }
 
     /**
@@ -127,7 +157,7 @@ public class TrivalHolidayService {
         }
 
         var yearAsked = dayOffRemove.getDayOff().getYear();
-        // finally decrement balance with an "upsert" like
+        // finally increment balance
         var employeeBalanceOfYearAsked = empDayOffBalanceRepository.findByEmployeeAndYear(employee, yearAsked).orElseThrow();
         var newBalance = employeeBalanceOfYearAsked.incrementBalance();
         log.info("{} day off removed {}. New balance is: {}", dayOff, employee, newBalance);
@@ -151,25 +181,5 @@ public class TrivalHolidayService {
         employeeDayOffBalance.setYear(yearAsked);
         employeeDayOffBalance.setBalance(balance);
         return empDayOffBalanceRepository.save(employeeDayOffBalance);
-    }
-
-    /**
-     * Converts Employee entity into its own DTO.
-     *
-     * @param employee
-     * @return
-     */
-    private EmployeeDayOffDto toDto(final Employee employee) {
-        var daysOff = employee.getDaysOff().stream()
-                .map(DayOff::getDayOff)
-                .collect(Collectors.toList());
-
-        return new EmployeeDayOffDto(
-                employee.getId(),
-                employee.getEmail(),
-                employee.getFirstName(),
-                employee.getLastName(),
-                daysOff
-        );
     }
 }
