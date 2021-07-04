@@ -25,8 +25,8 @@ public class Authority {
     /**
      * Defines authorities constants
      */
-    public static String DEVELOPER = "DEVELOPER";
-    public static String CONSULTANT = "CONSULTANT";
+    public static final String DEVELOPER = "DEVELOPER";
+    public static final String CONSULTANT = "CONSULTANT";
 
     @NotNull
     @Size(max = 50)

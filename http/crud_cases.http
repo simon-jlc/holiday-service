@@ -11,7 +11,7 @@ Content-Type: application/json
 Authorization: Basic w.runninggoat@aol.us HelloWorld!
 
 ### GET holiday filtering on email and year
-GET http://localhost:8080/api/holiday?email=m.bouvier@aol.us&year=2019
+GET http://localhost:8080/api/holiday?email=c.ehtridge@aol.us&year=2020
 Accept: application/json
 Content-Type: application/json
 Authorization: Basic w.runninggoat@aol.us HelloWorld!
@@ -47,6 +47,6 @@ Authorization: Basic c.ehtridge@aol.us HelloWorld!
 
 {
   "employee_email": "c.ehtridge@aol.us",
-  "day_off": "2020-06-01"
+  "day_off": "2020-06-22"
 }
 

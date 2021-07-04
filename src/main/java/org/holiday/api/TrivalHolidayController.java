@@ -49,7 +49,8 @@ public class TrivalHolidayController {
                 replaceHolidayVM.getPreviousDayOff(),
                 replaceHolidayVM.getNewDayOff()
         );
-        return ResponseEntity.badRequest().build();
+        var message = String.format("Day off ( %s ) successfully replaced with ( %s ).", replaceHolidayVM.getPreviousDayOff(), replaceHolidayVM.getNewDayOff());
+        return ResponseEntity.ok(new HolidaySuccessVM(message));
     }
 
     @DeleteMapping

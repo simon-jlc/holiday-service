@@ -2,7 +2,10 @@ package org.holiday;
 
 import org.holiday.domain.DayOffPerYear;
 import org.holiday.domain.Employee;
-import org.holiday.repository.*;
+import org.holiday.repository.DayOffPerYearRepository;
+import org.holiday.repository.DayOffRepository;
+import org.holiday.repository.EmployeeDayOffBalanceRepository;
+import org.holiday.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,8 +33,6 @@ public class TrivalHolidayApplicationTests {
 
     @Autowired
     protected DayOffPerYearRepository calendarRepo;
-
-    protected DayOffPerYear calendar2021;
 
     @PostConstruct
     public void doInitCalendar() {

@@ -1,5 +1,6 @@
 package org.holiday.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.holiday.batch.DynamicFilenameDefiner;
 import org.holiday.batch.EmployeeDayOffRecord;
 import org.springframework.batch.core.Job;
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableBatchProcessing
+@Slf4j
 public class BatchConfiguration {
 
     /**
@@ -97,6 +99,7 @@ public class BatchConfiguration {
     @Bean
     @StepScope
     protected FlatFileItemWriter<EmployeeDayOffRecord> csvFileWriter(
+//            @Qualifier("stepExecutionContext") ExecutionContext context,
             @Value("#{stepExecutionContext['output.file.name']}") String outputFilename
     ) {
         var fieldExtractor = new BeanWrapperFieldExtractor<EmployeeDayOffRecord>();
@@ -107,6 +110,7 @@ public class BatchConfiguration {
         lineAggregator.setFieldExtractor(fieldExtractor);
 
         var outputFilePath = Paths.get(outputDir, outputFilename);
+//        log.info("File < {}:{} > add dynamic property ['output.file.name'] : {}", jobName, stepExecution.getStepName(), outputFilename);
         return new FlatFileItemWriterBuilder<EmployeeDayOffRecord>()
                 .name("employeesDaysOffFileWriter")
                 .resource(new FileSystemResource(outputFilePath))

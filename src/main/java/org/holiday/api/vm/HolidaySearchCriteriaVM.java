@@ -2,7 +2,6 @@ package org.holiday.api.vm;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import com.google.common.base.Preconditions;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +10,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Collections;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -47,19 +45,12 @@ public class HolidaySearchCriteriaVM {
         return LocalDate.of(year, Month.DECEMBER, 31);
     }
 
-    public boolean hasCriteria() {
-        return (email != null && !email.isEmpty()) || year != null;
-    }
-
     /**
      * A noop search criteria uses for a global search
      *
      * @return
      */
     public static HolidaySearchCriteriaVM defaultSearch() {
-        return new HolidaySearchCriteriaVM(
-                Collections.emptySet(),
-                null
-        );
+        return new HolidaySearchCriteriaVM(null, null);
     }
 }
